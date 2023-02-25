@@ -1,0 +1,23 @@
+--Describing players location by Geography--
+
+create table players_location
+(
+name varchar(20),
+city varchar(20)
+);
+delete from players_location;
+insert into players_location
+values ('Sachin','Mumbai'),('Virat','Delhi') , ('Rahul','Bangalore'),('Rohit','Mumbai'),('Mayank','Bangalore');
+
+--Solution--
+WITH cte1 AS (
+SELECT *,
+ROW_NUMBER() OVER(PARTITION BY city ORDER BY name) as rn
+FROM players_location)
+SELECT
+MAX(CASE WHEN city = 'Bangalore' THEN name END) as Bangalore,
+MAX(CASE WHEN city = 'Mumbai' THEN name END) as Mumbai,
+MAX(CASE WHEN city = 'Delhi' THEN name END) as Delhi
+FROM cte1
+GROUP BY rn
+ORDER BY rn
