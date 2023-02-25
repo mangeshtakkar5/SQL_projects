@@ -1,4 +1,4 @@
---Write a query to find the records with more than 200 people in the stadium for more than 3 consecutive days--
+--Write a query to find the records with more than 100 people in the stadium for more than 3 consecutive days--
 
 create table stadium (
 id int,
