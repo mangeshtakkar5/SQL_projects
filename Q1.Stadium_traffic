@@ -1,0 +1,32 @@
+--Write a query to find the records with more than 200 people in the stadium for more than 3 consecutive days--
+
+create table stadium (
+id int,
+visit_date date,
+no_of_people int
+);
+
+insert into stadium
+values (1,'2017-07-01',10)
+,(2,'2017-07-02',109)
+,(3,'2017-07-03',150)
+,(4,'2017-07-04',99)
+,(5,'2017-07-05',145)
+,(6,'2017-07-06',1455)
+,(7,'2017-07-07',199)
+,(8,'2017-07-08',188);
+
+--Solution--
+
+WITH cte1 AS (
+SELECT *,
+RANK() OVER(ORDER BY visit_date) as rn,
+id - RANK() OVER(ORDER BY visit_date) as dif
+FROM stadium
+WHERE no_of_people>=100)
+SELECT id, visit_date, no_of_people
+FROM cte1
+WHERE dif in (SELECT dif
+FROM cte1
+GROUP BY dif
+having count(1)>=3)
